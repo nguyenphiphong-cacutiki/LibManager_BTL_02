@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+  <TextView
+      android:id="@+id/textLib"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="Welcome to Library"
+      android:textSize="30dp"
+      android:textStyle="bold|italic"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/imageView5"
+      tools:layout_editor_absoluteX="79dp"
+      android:textColor="@color/purple_500"/>
+
+  <ImageView
+      android:id="@+id/imageView3"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/top_background" />
+
+  <ImageView
+      android:id="@+id/imageView4"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/bottom_background"
+      tools:ignore="MissingConstraints" />
+
+  <ImageView
+      android:id="@+id/imageView5"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/logo"
+      tools:ignore="MissingConstraints"
+      tools:layout_editor_absoluteY="80dp" />
+
+  <EditText
+      android:id="@+id/edittextusername"
+      android:layout_width="300dp"
+      android:layout_height="50dp"
+      android:gravity="center"
+      android:hint="username"
+      app:layout_constraintBaseline_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textLib"
+      android:textAlignment="center"
+      android:layout_marginTop="20dp"
+      android:layout_marginBottom="16dp"
+      android:background="@drawable/edittext">
+
+  </EditText>
+
+  <EditText
+      android:id="@+id/pass"
+      android:layout_width="300dp"
+      android:layout_height="50dp"
+      android:background="@drawable/edittext"
+      android:gravity="center"
+      android:hint="password"
+      android:textAlignment="center"
+      android:inputType="textPassword"
+      app:passwordToggleEnabled="true"
+      app:layout_constraintBaseline_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/imageView4"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.504"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/edittextusername"
+      app:layout_constraintVertical_bias="0.07"
+      android:drawableRight="@drawable/baseline_visibility_off_24"
+      android:paddingRight="10dp"
+      android:longClickable="false"
+      />
+
+  <CheckBox
+      android:id="@+id/chkRememberPass"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="7dp"
+      android:text="Save Password"
+      app:layout_constraintTop_toBottomOf="@+id/pass"
+
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:ignore="DuplicateIds,MissingConstraints">
+
+  </CheckBox>
+
+  <Button
+      android:id="@+id/buttonLogin"
+      android:layout_width="200dp"
+
+      android:layout_height="50dp"
+      android:background="@drawable/edittext"
+      android:text="LOGIN"
+      app:layout_constraintTop_toBottomOf="@+id/chkRememberPass"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintStart_toStartOf="parent">
+
+  </Button>
+
+  <TextView
+      android:id="@+id/SignUp"
+      android:layout_width="280dp"
+      android:layout_height="51dp"
+      android:layout_marginTop="20dp"
+      android:text="@string/textedit"
+      android:textSize="16dp"
+      android:gravity="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+      tools:ignore="MissingConstraints">
+
+  </TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>
