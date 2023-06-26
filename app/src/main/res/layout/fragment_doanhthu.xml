@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="3"
+        android:layout_marginHorizontal="12dp"
         android:layout_marginTop="20dp">
 
         <Button
@@ -33,6 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
         android:orientation="horizontal"
         android:layout_weight="3"
         android:layout_marginTop="20dp">
@@ -75,6 +77,6 @@
         android:paddingVertical="20dp"
         android:paddingHorizontal="10dp"
         android:background="#201d1c"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="120dp" />
 
 </LinearLayout>

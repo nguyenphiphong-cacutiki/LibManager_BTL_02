@@ -110,7 +110,7 @@ public class PhieuMuonFragment extends Fragment {
         adapter = new PhieuMuonAdapter(getContext(), this);
         phieuMuonDB = new PhieuMuonDAO(getContext());
         fab = v.findViewById(R.id.fab);
-        sdf = new SimpleDateFormat("MM/dd/yyyy");
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
         phieuMuonList = new ArrayList<>();
         phieuMuonList = getData();
     }

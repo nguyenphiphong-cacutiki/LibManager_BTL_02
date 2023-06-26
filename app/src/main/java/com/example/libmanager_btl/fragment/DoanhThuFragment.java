@@ -26,7 +26,7 @@ public class DoanhThuFragment extends Fragment {
     Button btnTuNgay,btnDenNgay,btnDoanhThu;
     EditText edTuNgay,edDenNgay;
     TextView tvDoanhThu;
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     int mYear,mMonth,mDay;
     @SuppressLint("MissingInflatedId")
     @Override

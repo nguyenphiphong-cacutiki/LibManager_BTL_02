@@ -32,7 +32,7 @@ public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.Spen
     private List<PhieuMuon> list;
     private SachDAO sachDAO;
     private ThanhVienDAO thanhVienDAO;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public PhieuMuonAdapter(Context context, PhieuMuonFragment fragment) {
         this.context = context;
