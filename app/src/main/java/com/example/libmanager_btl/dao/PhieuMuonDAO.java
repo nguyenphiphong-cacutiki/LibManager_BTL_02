@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.libmanager_btl.database.DbHelper;
 import com.example.libmanager_btl.model.PhieuMuon;
@@ -14,7 +15,6 @@ import com.example.libmanager_btl.model.Top;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PhieuMuonDAO {
@@ -47,11 +47,13 @@ public class PhieuMuonDAO {
         values.put("tienThue", obj.getTienThue());
         values.put("traSach", obj.getTraSach());
         values.put("soLuong", obj.getSoLuong());
-
         return db.update("PhieuMuon", values, "maPM=?", new String[]{String.valueOf(obj.getMaPM())});
     }
     public int delete(String id){
         return db.delete("PhieuMuon", "maPM=?", new String[]{id});
+    }
+    public int deleteWithMaTV(String maTV){
+        return db.delete("PhieuMuon", "maTV=?", new String[]{maTV});
     }
     @SuppressLint("Range")
     public List<PhieuMuon> getData(String sql, String ...selectionArgs){
@@ -84,7 +86,14 @@ public class PhieuMuonDAO {
         String sql = "select * from PhieuMuon where maPM=?";
         return getData(sql, id).get(0);
     }
-
+    public List<PhieuMuon> getWithMaSach(String id){
+        String sql = "select * from PhieuMuon where maSach=?";
+        return getData(sql, id);
+    }
+    public List<PhieuMuon> getWithMaTVChuaTraSach(String maTV){
+        String sql = "select * from PhieuMuon where maTV=? and traSach='"+PhieuMuon.CHUA_TRA+"'";
+        return getData(sql, maTV);
+    }
     // thống kê top 10
     @SuppressLint("Range")
     public List<Top> getTop(){
@@ -103,20 +112,13 @@ public class PhieuMuonDAO {
         return list;
     }
     @SuppressLint("Range")
-    public Integer getDoanhThu(String tuNgay, String denNgay) throws ParseException {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = inputFormat.parse(tuNgay);
-        Date toDate = inputFormat.parse(tuNgay);
-        String fromDateFormated = outputFormat.format(fromDate);
-        String toDateFormated = outputFormat.format(toDate);
-        String sqlDoanhThu = "select sum(tienThue) as doanhThu from PhieuMuon where ngay between ? and ?";;
+    public Integer getDoanhThu(String tuNgay, String denNgay){
+        String sqlDoanhThu = "select sum(tienThue) as doanhThu from PhieuMuon where ngay between ? and ?";
         List<Integer> list = new ArrayList<>();
-        Cursor c = db.rawQuery(sqlDoanhThu, new String[]{fromDateFormated, toDateFormated});
+        Cursor c = db.rawQuery(sqlDoanhThu, new String[]{tuNgay, denNgay});
         while(c.moveToNext()){
             try{
                 list.add(Integer.parseInt(c.getString(c.getColumnIndex("doanhThu"))));
-
             }catch (Exception e){
                 list.add(0);
             }

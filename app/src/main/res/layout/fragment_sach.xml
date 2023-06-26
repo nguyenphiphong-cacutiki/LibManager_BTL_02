@@ -8,7 +8,7 @@
     tools:context=".fragment.SachFragment">
 
     <EditText
-        android:id="@+id/etTimkiemSanPham"
+        android:id="@+id/edSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -23,12 +23,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:drawableRight="@drawable/ic_baseline_search_24" />
-    <ListView
+        />
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvSach"
         android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/rcvSach"
         />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

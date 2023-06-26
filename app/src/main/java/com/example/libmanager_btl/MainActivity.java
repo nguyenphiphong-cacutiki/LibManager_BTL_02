@@ -4,13 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,8 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.libmanager_btl.dao.DemoDb;
+import com.example.libmanager_btl.dao.PhieuMuonDAO;
 import com.example.libmanager_btl.dao.ThuThuDAO;
 import com.example.libmanager_btl.database.DbHelper;
+import com.example.libmanager_btl.fragment.ChangeInfoFragment;
 import com.example.libmanager_btl.fragment.ChangePassFragment;
 import com.example.libmanager_btl.fragment.DoanhThuFragment;
 import com.example.libmanager_btl.fragment.LoaiSachFragment;
@@ -28,8 +36,12 @@ import com.example.libmanager_btl.fragment.PhieuMuonFragment;
 import com.example.libmanager_btl.fragment.SachFragment;
 import com.example.libmanager_btl.fragment.ThanhVienFragment;
 import com.example.libmanager_btl.fragment.TopFragment;
+import com.example.libmanager_btl.model.PhieuMuon;
 import com.example.libmanager_btl.model.ThuThu;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
@@ -70,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
         String user = i.getStringExtra("user");
         ThuThuDAO thuThuDAO = new ThuThuDAO(MainActivity.this);
         ThuThu thuThu = thuThuDAO.getWithID(user);
-        edUser.setText("Welcome "+thuThu.getHoTen()+" ^^");
+        edUser.setText("Xin chào "+thuThu.getHoTen()+" ^^");
+
+        thongBaoQuaHan();
 
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -120,10 +134,17 @@ public class MainActivity extends AppCompatActivity {
                     manager.beginTransaction()
                             .replace(R.id.flContent, changePassFragment)
                             .commit();
-                } else if (item.getItemId() == R.id.sub_logout) {
+                }else if(item.getItemId() == R.id.sub_Info){
+                     setTitle("Thay đổi thông tin");
+                    ChangeInfoFragment changeInfoFragment = new ChangeInfoFragment();
+                    manager.beginTransaction()
+                            .replace(R.id.flContent, changeInfoFragment)
+                            .commit();
+                }
+                 else if (item.getItemId() == R.id.sub_logout) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
-                } else {
+                }else {
                     setTitle("unknown");
                 }
                 drawer.closeDrawers();
@@ -137,5 +158,32 @@ public class MainActivity extends AppCompatActivity {
         if(id == android.R.id.home)
             drawer.openDrawer(GravityCompat.START);
         return super.onOptionsItemSelected(item);
+    }
+    private void thongBaoQuaHan(){
+        PhieuMuonDAO phieuMuonDb = new PhieuMuonDAO(this);
+        List<PhieuMuon> list = phieuMuonDb.getAll();
+        int sum = 0;
+        for(PhieuMuon item: list){
+            if(PhieuMuon.isQuaHan(item)) sum++;
+        }
+        if(sum>0) sendNotification(this, "Đang có "+sum+" người mượn sách quá hạn");
+    }
+    private void sendNotification(Context context, String mes){
+//        Toast.makeText(this, "push notification!", Toast.LENGTH_SHORT).show();
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_round);
+//        Notification notification = new Notification.Builder(this, "1");
+        Notification notification = new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
+                .setContentTitle("Thông báo quá hạn")
+                .setContentText(mes)
+                .setSmallIcon(R.drawable.heart)
+                .setLargeIcon(bitmap)
+                .build();
+        NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.notify( getNotificationId(), notification);
+
+    }
+    private int getNotificationId(){
+        return (int) new Date().getTime();
     }
 }

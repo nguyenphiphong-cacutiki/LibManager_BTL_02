@@ -88,9 +88,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_home"
+            android:src="@drawable/icbin"
             android:id="@+id/imgDeletePM"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:layout_margin="10dp"
             />
     </LinearLayout>

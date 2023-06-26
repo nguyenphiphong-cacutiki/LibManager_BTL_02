@@ -7,21 +7,21 @@
     tools:context=".MainActivity">
 
   <TextView
-      android:id="@+id/textLib"
+      android:id="@+id/tvTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
-      android:text="Welcome to Library"
+      android:text="Thư viện của bạn"
       android:textSize="30dp"
       android:textStyle="bold|italic"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/imageView5"
+      app:layout_constraintTop_toBottomOf="@+id/imgTopCenter"
       tools:layout_editor_absoluteX="79dp"
       android:textColor="@color/purple_500"/>
 
   <ImageView
-      android:id="@+id/imageView3"
+      android:id="@+id/imgTopRight"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:layout_constraintEnd_toEndOf="parent"
@@ -30,51 +30,111 @@
       app:srcCompat="@drawable/top_background" />
 
   <ImageView
-      android:id="@+id/imageView4"
+      android:id="@+id/imgBottom"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:srcCompat="@drawable/bottom_background"
-      tools:ignore="MissingConstraints" />
+    />
 
   <ImageView
-      android:id="@+id/imageView5"
+      android:id="@+id/imgTopCenter"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_height="120dp"
       android:layout_centerInParent="true"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginTop="60dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:srcCompat="@drawable/logo"
       tools:ignore="MissingConstraints"
-      tools:layout_editor_absoluteY="80dp" />
+      />
 
-  <EditText
+  <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+
+      app:layout_constraintBaseline_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+
+      android:layout_marginTop="12dp"
+
+      android:id="@+id/layoutUser"
+
+      android:paddingHorizontal="20dp"
+      app:boxCornerRadiusBottomEnd="10dp"
+      app:boxCornerRadiusBottomStart="10dp"
+      app:boxCornerRadiusTopEnd="10dp"
+      app:boxCornerRadiusTopStart="10dp"
+    >
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edittextusername"
+        android:hint="Tên đăng nhập"
+        android:paddingHorizontal="20dp"
+      />
+  </com.google.android.material.textfield.TextInputLayout>
+  <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:passwordToggleEnabled="true"
+      app:layout_constraintBaseline_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/layoutUser"
+
+      android:layout_marginTop="12dp"
+
+      android:id="@+id/layoutPass"
+
+      android:paddingHorizontal="20dp"
+      app:boxCornerRadiusBottomEnd="10dp"
+      app:boxCornerRadiusBottomStart="10dp"
+      app:boxCornerRadiusTopEnd="10dp"
+      app:boxCornerRadiusTopStart="10dp"
+      >
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        android:paddingHorizontal="20dp"
+        android:id="@+id/pass"
+        />
+  </com.google.android.material.textfield.TextInputLayout>
+
+ <!-- <EditText
       android:id="@+id/edittextusername"
       android:layout_width="300dp"
       android:layout_height="50dp"
-      android:gravity="center"
       android:hint="username"
+      android:paddingHorizontal="20dp"
       app:layout_constraintBaseline_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/textLib"
-      android:textAlignment="center"
+      android:textAlignment="textStart"
       android:layout_marginTop="20dp"
       android:layout_marginBottom="16dp"
       android:background="@drawable/edittext">
 
-  </EditText>
+  </EditText>-->
 
-  <EditText
+  <!--<EditText
       android:id="@+id/pass"
       android:layout_width="300dp"
       android:layout_height="50dp"
       android:background="@drawable/edittext"
-      android:gravity="center"
+      android:paddingHorizontal="20dp"
       android:hint="password"
-      android:textAlignment="center"
+      android:layout_marginTop="14dp"
+      android:textAlignment="textStart"
       android:inputType="textPassword"
       app:passwordToggleEnabled="true"
       app:layout_constraintBaseline_toBottomOf="parent"
@@ -87,43 +147,47 @@
       android:drawableRight="@drawable/baseline_visibility_off_24"
       android:paddingRight="10dp"
       android:longClickable="false"
-      />
+      />-->
 
   <CheckBox
       android:id="@+id/chkRememberPass"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="7dp"
-      android:text="Save Password"
-      app:layout_constraintTop_toBottomOf="@+id/pass"
-
+      android:text="Nhớ tài khoản"
+      android:layout_marginTop="8dp"
+      app:layout_constraintTop_toBottomOf="@+id/layoutPass"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      android:layout_marginLeft="20dp"
       app:layout_constraintStart_toStartOf="parent"
-      tools:ignore="DuplicateIds,MissingConstraints">
+      >
 
   </CheckBox>
 
   <Button
       android:id="@+id/buttonLogin"
       android:layout_width="200dp"
-
       android:layout_height="50dp"
-      android:background="@drawable/edittext"
-      android:text="LOGIN"
+      android:background="@drawable/custombutton"
+      app:backgroundTint="@null"
+      android:layout_marginTop="10dp"
+      android:text="ĐĂNG NHẬP"
       app:layout_constraintTop_toBottomOf="@+id/chkRememberPass"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toStartOf="parent">
 
   </Button>
 
   <TextView
       android:id="@+id/SignUp"
-      android:layout_width="280dp"
-      android:layout_height="51dp"
-      android:layout_marginTop="20dp"
-      android:text="@string/textedit"
-      android:textSize="16dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="@string/questionSignup"
+      android:textColor="#CF4708"
+      android:textStyle="bold|italic"
+      android:textSize="16sp"
       android:gravity="center"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

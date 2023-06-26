@@ -7,11 +7,11 @@
     tools:context=".fragment.ThanhVienFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvThanhVien"
-        />
+        android:layout_height="wrap_content"
+        android:id="@+id/rcvThanhVien"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

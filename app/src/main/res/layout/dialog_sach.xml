@@ -50,6 +50,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="9"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             >
             <com.google.android.material.textfield.TextInputEditText
@@ -63,25 +64,25 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical"
             >
             <ImageButton
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/icon_home"
+                android:src="@drawable/icon_plus"
                 android:visibility="gone"
+                android:scaleType="fitXY"
                 android:id="@+id/btPlusSoLuong"
                 />
             <ImageButton
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/icon_home"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:visibility="gone"
+                android:scaleType="fitXY"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_minus"
                 android:id="@+id/btminusSoLuong"
                 />
         </LinearLayout>

@@ -2,17 +2,17 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
+    android:layout_height="162dp"
     android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
+    android:padding="10dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="bottom"
     >
     <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
         android:src="@drawable/nav3"
         android:background="@null"
         />
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/txtUser"
-        android:text="Welcome"
+        android:text="Xin chào"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"

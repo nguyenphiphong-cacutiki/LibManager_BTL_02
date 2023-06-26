@@ -5,71 +5,92 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libmanager_btl.R;
+import com.example.libmanager_btl.dao.PhieuMuonDAO;
 import com.example.libmanager_btl.fragment.ThanhVienFragment;
+import com.example.libmanager_btl.model.Mode;
 import com.example.libmanager_btl.model.ThanhVien;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class ThanhVienAdapter extends ArrayAdapter<ThanhVien> {
+public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.Holder> {
 
     private Context context;
-    ThanhVienFragment thanhVienFragment;
-    private ArrayList<ThanhVien> lists;
-    private TextView tvMaTV, tvTenTV, tvNamSinh;
-    ImageView imgDel;
-    public ThanhVienAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
-    }
+    private ThanhVienFragment thanhVienFragment;
+    private List<ThanhVien> lists;
+    
 
-    public ThanhVienAdapter(@NonNull Context context, ThanhVienFragment thanhVienFragment, ArrayList<ThanhVien> lists) {
-        super(context, 0, lists);
+    public ThanhVienAdapter(Context context, ThanhVienFragment thanhVienFragment){
         this.context = context;
         this.thanhVienFragment = thanhVienFragment;
+    }
+    public void setData(List<ThanhVien> lists){
         this.lists = lists;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View v = convertView;
-        Log.d("***", "chạy hàm getview của adapter thành viên");
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_thanh_vien, parent, false);
+        return new Holder(v);
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        if(lists != null){
+            ThanhVien item = lists.get(position);
+            holder.tvMaTV.setText("Mã thành viên: "+ item.getMaTV());
+            holder.tvTenTV.setText("Tên thành viên: "+ item.getHoTen());
+            holder.tvNamSinh.setText("Năm sinh: "+ item.getNamSinh());
 
-        if(v == null){
-            LayoutInflater inflater = (LayoutInflater)
-                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.item_thanh_vien, null);
-        }
-        final ThanhVien thanhVien = lists.get(position);
-        if(thanhVien != null){
-            tvMaTV = v.findViewById(R.id.tvMaTV);
-            tvTenTV = v.findViewById(R.id.tvTenTV);
-            tvNamSinh = v.findViewById(R.id.tvNamSinh);
-            imgDel = v.findViewById(R.id.imgDeleteLS);
-
-            tvMaTV.setText("Mã thành viên: "+ thanhVien.getMaTV());
-            tvTenTV.setText("Tên thành viên: "+ thanhVien.getHoTen());
-            tvNamSinh.setText("Năm sinh: "+ thanhVien.getNamSinh());
-
-
-            imgDel.setOnClickListener(new View.OnClickListener() {
+            holder.imgDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    thanhVienFragment.xoa(String.valueOf(thanhVien.getMaTV()));
+                    PhieuMuonDAO phieuMuonDb = new PhieuMuonDAO(context);
+                    if(phieuMuonDb.getWithMaTVChuaTraSach(item.getMaTV()+"").size()>0)
+                        Toast.makeText(context, "Không thể xóa thành viên chưa trả sách", Toast.LENGTH_SHORT).show();
+                    else
+                        thanhVienFragment.delete(String.valueOf(item.getMaTV()));
                 }
             });
-
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    thanhVienFragment.dialogInsertAndUpdate(context, Mode.MODE_UPDATE, item);
+                    return false;
+                }
+            });
+        }else{
+            Log.d("***", "bin dữ liệu cho "+" list đang null, ko bin");
         }
+    }
 
-        return v;
+    @Override
+    public int getItemCount() {
+        int size = 0;
+        if(lists != null) size = lists.size();
+        Log.d("***", "count được số item: "+size);
+        return size;
+    }
+
+    public class Holder extends RecyclerView.ViewHolder{
+        private TextView tvMaTV, tvTenTV, tvNamSinh;
+        private ImageView imgDel;
+        public Holder(@NonNull View itemView) {
+            super(itemView);
+            tvMaTV = itemView.findViewById(R.id.tvMaTV);
+            tvTenTV = itemView.findViewById(R.id.tvTenTV);
+            tvNamSinh = itemView.findViewById(R.id.tvNamSinh);
+            imgDel = itemView.findViewById(R.id.imgDeleteLS);
+        }
     }
 
 }

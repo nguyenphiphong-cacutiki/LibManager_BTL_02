@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.libmanager_btl.database.DbHelper;
 import com.example.libmanager_btl.model.ThuThu;
@@ -24,6 +25,19 @@ public class ThuThuDAO {
         values.put("hoTen", obj.getHoTen());
         values.put("matKhau", obj.getMatKhau());
         return db.insert("ThuThu", null, values);
+    }
+    public int updateInfo(ThuThu old, ThuThu mNew){
+        ThuThu a = getWithID(mNew.getMaTT());
+        if(a != null){
+            //  tồn tại mã thủ thư trùng
+            // không thực hiện update
+
+            return -1;
+        }else {
+            insert(mNew);
+            delete(old.getMaTT());
+            return 1;
+        }
     }
     public int updatePass(ThuThu obj){
         ContentValues values = new ContentValues();

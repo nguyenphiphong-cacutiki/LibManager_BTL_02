@@ -5,24 +5,23 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 
 import com.example.libmanager_btl.R;
 import com.example.libmanager_btl.adapter.LoaiSachSpinnerAdapter;
@@ -34,62 +33,52 @@ import com.example.libmanager_btl.model.Sach;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
 
 public class SachFragment extends Fragment {
 
     private final int MODE_INSERT = 0;
     private final int MODE_UPDATE = 1;
 
-    private ListView listView;
+    private RecyclerView rcvSach;
     private FloatingActionButton fab;
 
     //sach
-    private SachAdapter sachAdapter;
     private Sach itemSach;
-    private List<Sach> listSach;
     private SachDAO sachDb;
-    private SearchView searchView;
     private SachAdapter adapter;
+    private EditText edSearch;
+
+
 
     // spinner
     LoaiSachSpinnerAdapter spinnerAdapter;
     ArrayList<LoaiSach> listLoaiSach;
     LoaiSachDAO loaiSachDb;
-    LoaiSach itemLoaiSach;
 
+    // save info when select item of spinner loaiSach
     int maLoaiSach, position;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sach, container, false);
-        listView = v.findViewById(R.id.lvSach);
-        fab = v.findViewById(R.id.fabAddSach);
-        sachDb = new SachDAO(getContext());
-
-        capNhatListView();
+        mappingAndInitializeVariable(v);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcvSach.setLayoutManager(linearLayoutManager);
+        rcvSach.setAdapter(adapter);
+        adapter.setData(getData());
+        //
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogEdit(getContext(), MODE_INSERT);
+                dialogAddAndUpdate(getContext(), MODE_INSERT, null);
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                itemSach = listSach.get(position);
-                dialogEdit(getContext(), MODE_UPDATE);
-                return false;
-            }
-        });
-
-        EditText etTimkiemDH = v.findViewById(R.id.etTimkiemSanPham);
-
-       // searchView.clearFocus();
-        etTimkiemDH.addTextChangedListener(new TextWatcher() {
+        edSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -97,46 +86,44 @@ public class SachFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                adapter.getFilter().filter(s);
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-//                if (adapter != null) {
-//                    adapter.setData(getListSachs(), s.toString());
-//                    adapter.notifyDataSetChanged();
-//                }
-                {adapter.setData(timkiemSach(getListSachs(),s.toString()));}
-            //    adapter.setData(timkiemSach(sachDb.filter(s.toString()));
+                adapter.setData(searchSach(getData(), s.toString()));
             }
         });
 
         return v;
     }
-    private ArrayList<Sach> timkiemSach(ArrayList<Sach> list, String s){
-        ArrayList<Sach> list1 = new ArrayList<>();
+
+    private void mappingAndInitializeVariable(View v) {
+        fab = v.findViewById(R.id.fabAddSach);
+        edSearch = v.findViewById(R.id.edSearch);
+        sachDb = new SachDAO(getContext());
+
+        rcvSach = v.findViewById(R.id.rcvSach);
+        adapter = new SachAdapter(getContext(), this);
+
+    }
+    private List<Sach> searchSach(List<Sach> list, String s){
+        List<Sach> res = new ArrayList<>();
         for( Sach item : list){
             if(item.getTenSach().trim().toLowerCase().contains(s.trim().toLowerCase())){
-                list1.add(item);
+                res.add(item);
             }
         }
-        return list1;
+        return res;
     }
 
-    private ArrayList<Sach> getListSachs() {
-        return (ArrayList<Sach>)sachDb.getAll();
+    public void updateRcv(){
+        adapter.setData(getData());
     }
-
-    public void capNhatListView() {
-        listSach = sachDb.getAll();
-        Log.d("***", "Số sách có: " + listSach.size());
-        sachAdapter = new SachAdapter(getActivity(), this, listSach);
-        adapter = sachAdapter; // Gán sachAdapter cho biến adapter
-        listView.setAdapter(sachAdapter);
+    public List<Sach> getData(){
+        return sachDb.getAll();
     }
-
-
-    public void xoa(final String id) {
+    public void delete(final String id){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Xóa Sách");
         builder.setMessage("Bạn có muốn xóa không?");
@@ -156,15 +143,14 @@ public class SachFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sachDb.delete(id);
-                        capNhatListView();
+                        updateRcv();
                         dialog.cancel();
                     }
                 }
         );
         builder.show();
     }
-
-    public void dialogEdit(Context context, int type) {
+    public void dialogAddAndUpdate(Context context, int type, Sach itemUpdate){
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_sach);
         //mapping
@@ -181,7 +167,7 @@ public class SachFragment extends Fragment {
         listLoaiSach = new ArrayList<>();
         loaiSachDb = new LoaiSachDAO(context);
         listLoaiSach = (ArrayList<LoaiSach>) loaiSachDb.getAll();
-        Log.d("***", "có số loại sách: " + listLoaiSach.size());
+        Log.d("***","có số loại sách: "+ listLoaiSach.size());
         spinnerAdapter = new LoaiSachSpinnerAdapter(context, listLoaiSach);
         spinner.setAdapter(spinnerAdapter);
 
@@ -199,16 +185,16 @@ public class SachFragment extends Fragment {
             }
         });
         edMaSach.setEnabled(false);
-        if (type == MODE_UPDATE) {
-            edMaSach.setText(String.valueOf(itemSach.getMaSach()));
-            edTenSach.setText(itemSach.getTenSach());
-            edGiaThue.setText(String.valueOf(itemSach.getGiaThue()));
-            edSoLuong.setText("" + itemSach.getSoLuong());
+        if(type == MODE_UPDATE){
+            edMaSach.setText(String.valueOf(itemUpdate.getMaSach()));
+            edTenSach.setText(itemUpdate.getTenSach());
+            edGiaThue.setText(String.valueOf(itemUpdate.getGiaThue()));
+            edSoLuong.setText(String.valueOf(itemUpdate.getSoLuong()));
             edSoLuong.setEnabled(false);
             btPlusSoLuong.setVisibility(View.VISIBLE);
             btMinusSoLuong.setVisibility(View.VISIBLE);
-            for (int i = 0; i < listLoaiSach.size(); i++) {
-                if (itemSach.getMaLoai() == listLoaiSach.get(i).getMaLoai()) {
+            for(int i = 0; i < listLoaiSach.size(); i++){
+                if(itemUpdate.getMaLoai() == listLoaiSach.get(i).getMaLoai()){
                     position = i;
                 }
             }
@@ -216,23 +202,17 @@ public class SachFragment extends Fragment {
             btPlusSoLuong.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int quantity = Integer.parseInt(edSoLuong.getText().toString());
-                    quantity++;
-                    edSoLuong.setText(String.valueOf(quantity));
+                    dialogChangeSoLuong(1, edSoLuong);
                 }
             });
             btMinusSoLuong.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int quantity = Integer.parseInt(edSoLuong.getText().toString());
-                    if (quantity > 0) {
-                        quantity--;
-                        edSoLuong.setText(String.valueOf(quantity));
-                    }
+                    dialogChangeSoLuong(-1, edSoLuong);
+
                 }
             });
         }
-
         btDontSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,32 +225,73 @@ public class SachFragment extends Fragment {
                 String tenSach = edTenSach.getText().toString().trim();
                 String giaThue = edGiaThue.getText().toString().trim();
                 String soLuong = edSoLuong.getText().toString().trim();
-                if (tenSach.isEmpty() || giaThue.isEmpty() || soLuong.isEmpty()) {
+                if(tenSach.isEmpty() || giaThue.isEmpty() || soLuong.isEmpty()){
                     Toast.makeText(context, "Vui lòng nhập đủ thông tin!", Toast.LENGTH_SHORT).show();
-                } else {
+                }else{
                     itemSach = new Sach();
                     itemSach.setTenSach(tenSach);
                     itemSach.setMaLoai(maLoaiSach);
                     itemSach.setGiaThue(Integer.parseInt(giaThue));
                     itemSach.setSoLuong(Integer.parseInt(soLuong));
 
-                    if (type == MODE_INSERT) {
-                        if (sachDb.insert(itemSach) > 0) {
+                    if(type == MODE_INSERT){
+                        if(sachDb.insert(itemSach)>0){
                             Toast.makeText(context, "Thêm thành công!", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }else{
                             Toast.makeText(context, "Thêm thất bại!", Toast.LENGTH_SHORT).show();
                         }
-                    } else if (type == MODE_UPDATE) {
+                    }else if(type == MODE_UPDATE){
                         itemSach.setMaSach(Integer.parseInt(edMaSach.getText().toString().trim()));
-                        if (sachDb.update(itemSach) > 0) {
+                        if(sachDb.update(itemSach) > 0){
                             Toast.makeText(context, "Sửa thành công!", Toast.LENGTH_SHORT).show();
-                        } else {
+
+                        }else{
                             Toast.makeText(context, "Sửa thất bại!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    capNhatListView();
+                    updateRcv();
                     dialog.dismiss();
                 }
+
+
+
+            }
+        });
+        dialog.show();
+    }
+    private void dialogChangeSoLuong(int type, EditText edSlCu){
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_change_amount_sach);
+        EditText edSoLuong = dialog.findViewById(R.id.edSoLuong);
+        Button btOk = dialog.findViewById(R.id.btOk);
+        Button btCancel = dialog.findViewById(R.id.btCancel);
+
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               String strSl = edSoLuong.getText().toString().trim();
+               if(strSl.isEmpty()){
+                   Toast.makeText(getContext(), "Vui lòng nhập số lượng", Toast.LENGTH_SHORT).show();
+               }else{
+                   int slCu = Integer.parseInt(edSlCu.getText().toString().trim());
+                   int slmoi = Integer.parseInt(strSl);
+                   if(type> 0){
+                        edSlCu.setText((slCu + slmoi) + "");
+                   }else{
+                       if(slmoi >= slCu){
+                           edSlCu.setText("0");
+                       }else{
+                           edSlCu.setText((slCu - slmoi) + "");
+                       }
+                   }
+                   dialog.dismiss();
+               }
             }
         });
         dialog.show();

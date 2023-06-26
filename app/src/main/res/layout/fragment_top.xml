@@ -6,12 +6,37 @@
     tools:context=".fragment.TopFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/lvTop"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/_tvSach"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:text="Tên sách">
 
-    </ListView>
+        </TextView>
+        <TextView
+            android:id="@+id/_tvSL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="Số lượng">
+
+        </TextView>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rcvTop"
+        android:layout_marginTop="30dp"
+        />
 
 </FrameLayout>

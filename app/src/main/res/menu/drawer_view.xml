@@ -50,6 +50,11 @@
                     android:title="Đổi mật khẩu"
                     />
                 <item
+                    android:id="@+id/sub_Info"
+                    android:icon="@drawable/icon_info_toolbar"
+                    android:title="Thay đổi thông tin"
+                    />
+                <item
                     android:id="@+id/sub_logout"
                     android:icon="@drawable/logout"
                     android:title="Đăng xuất"

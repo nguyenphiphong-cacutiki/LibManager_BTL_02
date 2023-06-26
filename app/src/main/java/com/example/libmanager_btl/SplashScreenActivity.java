@@ -6,18 +6,14 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
 public class SplashScreenActivity extends AppCompatActivity {
-    ImageView logo,appname,splashimg;
-    LottieAnimationView lottie;
-    private static int Splash_timeout = 5000;
+    private ImageView logo, appname, splashimg;
+    private LottieAnimationView lottie;
+    private static final int SPLASH_TIMEOUT = 5000;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -36,15 +32,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },5000);
+        }, SPLASH_TIMEOUT);
 
-        splashimg.animate().translationY(-3000).setDuration(1000).setStartDelay(4000);
-        logo.animate().translationY(3000).setDuration(1000).setStartDelay(4000);
-        appname.animate().translationY(3000).setDuration(1000).setStartDelay(4000);
-        lottie.animate().translationY(3000).setDuration(1000).setStartDelay(4000);
-
-
-
+        splashimg.animate().translationY(-3000).setDuration(4000).setStartDelay(1000);
+        logo.animate().translationY(3000).setDuration(4000).setStartDelay(1000);
+        appname.animate().translationY(3000).setDuration(4000).setStartDelay(1000);
+        lottie.animate().translationY(3000).setDuration(4000).setStartDelay(1000);
 
     }
 }

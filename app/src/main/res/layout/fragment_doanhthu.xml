@@ -16,16 +16,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="10dp"
             android:text="Từ Ngày"
-            android:textSize="18sp" />
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/edTuNgay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:hint="YYYY/MM/DD"
-            android:textSize="18sp" />
+            android:hint="Ngày bắt đầu"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -41,16 +42,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="10dp"
             android:text="Đến Ngày"
-            android:textSize="18sp" />
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/edDenNgay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:hint="YYYY/MM/DD"
-            android:textSize="18sp" />
+            android:hint="Ngày kết thúc"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -61,14 +63,18 @@
         android:text="Doanh Thu"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvDoanhThu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="16sp"
         android:text="Doanh Thu"
+        android:textColor="#ff4524"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="10dp"
+        android:background="#201d1c"
         android:layout_marginTop="40dp" />
 
 </LinearLayout>

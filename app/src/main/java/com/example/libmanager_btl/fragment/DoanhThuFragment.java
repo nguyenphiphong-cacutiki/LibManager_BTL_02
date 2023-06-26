@@ -17,10 +17,8 @@ import android.widget.TextView;
 import com.example.libmanager_btl.R;
 import com.example.libmanager_btl.dao.PhieuMuonDAO;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 
@@ -28,7 +26,7 @@ public class DoanhThuFragment extends Fragment {
     Button btnTuNgay,btnDenNgay,btnDoanhThu;
     EditText edTuNgay,edDenNgay;
     TextView tvDoanhThu;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
     int mYear,mMonth,mDay;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,14 +67,10 @@ public class DoanhThuFragment extends Fragment {
         btnDoanhThu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tuNgay = edTuNgay.getText().toString();
-                String denNgay = edDenNgay.getText().toString();
+                String tuNgay = edTuNgay.getText().toString().trim();
+                String denNgay = edDenNgay.getText().toString().trim();
                 PhieuMuonDAO phieuMuonDAO= new PhieuMuonDAO(getActivity());
-                try {
-                    tvDoanhThu.setText("Doanh Thu: " + phieuMuonDAO.getDoanhThu(tuNgay,denNgay) +"VND");
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                tvDoanhThu.setText("Doanh Thu: " + phieuMuonDAO.getDoanhThu(tuNgay,denNgay) +" VND");
 
             }
         });
@@ -95,13 +89,12 @@ public class DoanhThuFragment extends Fragment {
         }
     };
     DatePickerDialog.OnDateSetListener mDateDenNgay =  new DatePickerDialog.OnDateSetListener() {
-
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             mYear = year;
             mMonth=monthOfYear;
             mDay = dayOfMonth;
-            GregorianCalendar c=  new GregorianCalendar(mYear,mMonth,mDay);
+            GregorianCalendar c =  new GregorianCalendar(mYear,mMonth,mDay);
             edDenNgay.setText(sdf.format(c.getTime()));
         }
     };

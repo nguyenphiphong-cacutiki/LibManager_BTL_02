@@ -1,10 +1,12 @@
 package com.example.libmanager_btl.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class PhieuMuon {
     public static final int DA_TRA = 1;
     public static final int CHUA_TRA = 0;
+    public static final long HAN_MUON = 14*24*3600*1000;
 
     private int maPM;
     private String maTT;
@@ -14,7 +16,6 @@ public class PhieuMuon {
     private int tienThue;
     private int traSach;
     private int soLuong;
-    private int maThanhVien;
 
     public PhieuMuon() {
     }
@@ -93,5 +94,12 @@ public class PhieuMuon {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
+    public static boolean isQuaHan(PhieuMuon phieuMuon){
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(phieuMuon.getNgay());
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(new Date());
 
+        return calendar2.getTimeInMillis() - calendar1.getTimeInMillis() > PhieuMuon.HAN_MUON;
+    }
 }

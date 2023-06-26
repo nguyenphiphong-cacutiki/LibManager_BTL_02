@@ -11,16 +11,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.libmanager_btl.OnItemClickListener;
 import com.example.libmanager_btl.R;
 import com.example.libmanager_btl.dao.SachDAO;
 import com.example.libmanager_btl.dao.ThanhVienDAO;
 import com.example.libmanager_btl.fragment.PhieuMuonFragment;
+import com.example.libmanager_btl.model.Mode;
 import com.example.libmanager_btl.model.PhieuMuon;
 import com.example.libmanager_btl.model.Sach;
 import com.example.libmanager_btl.model.ThanhVien;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.SpendingHolder> {
@@ -30,12 +32,7 @@ public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.Spen
     private List<PhieuMuon> list;
     private SachDAO sachDAO;
     private ThanhVienDAO thanhVienDAO;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-    private OnItemClickListener itemClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.itemClickListener = listener;
-    }
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public PhieuMuonAdapter(Context context, PhieuMuonFragment fragment) {
         this.context = context;
@@ -47,6 +44,12 @@ public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.Spen
 
     public void setData(List<PhieuMuon> list) {
         this.list = list;
+        notifyDataSetChanged();
+    }
+    public void deleteItemOfList(int pos){
+        if(pos >= 0  && pos < list.size() - 1){
+            list.remove(pos);
+        }
     }
 
     @NonNull
@@ -71,30 +74,25 @@ public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.Spen
             holder.tvNgay.setText(String.format("Ngày: " + sdf.format(phieuMuon.getNgay())));
             holder.tvSoLuong.setText("Số lượng: " + phieuMuon.getSoLuong());
 
+
+
+
             if (phieuMuon.getTraSach() == PhieuMuon.DA_TRA) {
                 holder.tvTraSach.setTextColor(Color.GREEN);
                 holder.tvTraSach.setText("Đã trả sách");
             } else {
                 holder.tvTraSach.setTextColor(Color.RED);
                 holder.tvTraSach.setText("Chưa trả sách");
+                if(PhieuMuon.isQuaHan(phieuMuon)){
+                    holder.tvTraSach.setText("Đã quá hạn");
+                }
             }
 
-            holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
-                    // Xử lý sự kiện click nút xóa
-                }
-            });
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemClickListener != null) {
-                        int position = holder.getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            itemClickListener.onItemClick(position);
-                        }
-                    }
+                public boolean onLongClick(View v) {
+                    fragment.insertAndUpdate(context, Mode.MODE_UPDATE, phieuMuon);
+                    return false;
                 }
             });
         }
@@ -104,12 +102,6 @@ public class PhieuMuonAdapter extends RecyclerView.Adapter<PhieuMuonAdapter.Spen
     public int getItemCount() {
         if (list != null) return list.size();
         return 0;
-    }
-
-
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
     }
 
     public class SpendingHolder extends RecyclerView.ViewHolder {

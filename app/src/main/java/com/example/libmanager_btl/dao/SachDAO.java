@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.libmanager_btl.database.DbHelper;
+import com.example.libmanager_btl.model.LoaiSach;
 import com.example.libmanager_btl.model.Sach;
 
 import java.util.ArrayList;
@@ -67,7 +68,8 @@ public class SachDAO {
         List<Sach> list = getData(sql,id);
         return list.get(0);
     }
-
-
-
+    public List<Sach> getWithMaLoai(String maLoai){
+        String sql = "select *from Sach where maLoai=?";
+        return getData(sql, maLoai);
+    }
 }

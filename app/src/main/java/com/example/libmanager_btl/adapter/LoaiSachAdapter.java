@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libmanager_btl.R;
+import com.example.libmanager_btl.dao.SachDAO;
 import com.example.libmanager_btl.fragment.LoaiSachFragment;
 import com.example.libmanager_btl.model.LoaiSach;
 
@@ -42,12 +43,16 @@ public class LoaiSachAdapter extends RecyclerView.Adapter<LoaiSachAdapter.Spendi
     public void onBindViewHolder(@NonNull SpendingHolder holder, int position) {
         if(list != null){
             LoaiSach loaiSach = list.get(position);
-            holder.tvMaLoai.setText(loaiSach.getMaLoai()+"");
-            holder.tvTenLoai.setText(loaiSach.getTenLoai());
+            holder.tvMaLoai.setText("Mã loại: " + loaiSach.getMaLoai());
+            holder.tvTenLoai.setText("Tên loại: " + loaiSach.getTenLoai());
             holder.imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fragment.deleteItem(loaiSach.getMaLoai()+"");
+                    SachDAO sachDb = new SachDAO(context);
+                    if(sachDb.getWithMaLoai(loaiSach.getMaLoai()+"").size()>0){
+                        Toast.makeText(context, "Không thể xóa loại này khi đang dùng!", Toast.LENGTH_SHORT).show();
+                    }else
+                        fragment.deleteItem(loaiSach.getMaLoai()+"");
                 }
             });
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -80,8 +85,6 @@ public class LoaiSachAdapter extends RecyclerView.Adapter<LoaiSachAdapter.Spendi
             tvMaLoai = itemView.findViewById(R.id.tvMaLoaiSach);
             tvTenLoai = itemView.findViewById(R.id.tvTenLoaiSach);
             imgDelete = itemView.findViewById(R.id.imgDeleteLoaiSach);
-            
-
         }
     }
 }
